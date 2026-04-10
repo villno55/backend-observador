@@ -1,12 +1,16 @@
 import db from "../config/db.js";
 
-//crear
+
+// ==============================
+// CREAR OBSERVACIÓN (H07)
+// ==============================
 export const crearObservacion = async (data) => {
 
   if (data.descripcion.trim().length < 10) {
     throw new Error("Descripción muy corta");
   }
 
+  // Validar que el instructor tenga el aprendiz en su grupo
   const [validacion] = await db.query(`
     SELECT COUNT(*) as total
     FROM instructor_grupo ig
@@ -35,19 +39,44 @@ export const crearObservacion = async (data) => {
 };
 
 
-//consultar
+
+// ==============================
+// CONSULTAR OBSERVACIONES (H08)
+// ==============================
 export const obtenerObservaciones = async (filtros) => {
 
   let query = `
-    SELECT 
-      o.*,
-      p.nombres,
-      p.apellidos
+    SELECT
+      o.id_observacion,
+      o.tipo_observacion,
+      o.severidad,
+      o.descripcion,
+      o.fecha_observacion,
+
+      -- 👇 nombre completo aprendiz
+      CONCAT(pa.nombres, ' ', pa.apellidos) AS aprendiz,
+
+      -- 👇 nombre completo instructor (autor)
+      CONCAT(pi.nombres, ' ', pi.apellidos) AS instructor
+
     FROM observaciones o
+
+    -- aprendiz
     JOIN aprendices a ON o.id_aprendiz = a.id_aprendiz
-    JOIN personas p ON a.id_usuario = p.id_usuario
-    JOIN aprendiz_grupo ag ON a.id_aprendiz = ag.id_aprendiz
-    JOIN instructor_grupo ig ON ag.id_grupo = ig.id_grupo
+    JOIN usuarios ua ON a.id_usuario = ua.id_usuario
+    JOIN personas pa ON ua.id_usuario = pa.id_usuario
+
+    -- instructor
+    JOIN instructores i ON o.id_instructor = i.id_instructor
+    JOIN usuarios ui ON i.id_usuario = ui.id_usuario
+    JOIN personas pi ON ui.id_usuario = pi.id_usuario
+
+    -- 🔥 seguridad por grupo
+    JOIN instructor_grupo ig ON ig.id_instructor = i.id_instructor
+    JOIN aprendiz_grupo ag 
+      ON ag.id_grupo = ig.id_grupo 
+      AND ag.id_aprendiz = a.id_aprendiz
+
     WHERE ig.id_instructor = ?
   `;
 
