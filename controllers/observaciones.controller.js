@@ -1,9 +1,7 @@
 import * as service from "../services/observaciones.service.js";
 
+// CREAR OBSERVACIÓN 
 
-// ==============================
-// CREAR OBSERVACIÓN (H07)
-// ==============================
 export const crearObservacion = async (req, res) => {
   try {
     const {
@@ -13,10 +11,9 @@ export const crearObservacion = async (req, res) => {
       descripcion
     } = req.body;
 
-    //  Simulación lista para JWT
     const id_instructor = req.user?.id || 1;
 
-    // Validar campos obligatorios
+
     if (!id_aprendiz || !tipo_observacion || !severidad || !descripcion) {
       return res.status(400).json({
         msg: "Todos los campos son obligatorios"
@@ -52,9 +49,7 @@ export const crearObservacion = async (req, res) => {
 
 
 
-// ==============================
-// CONSULTAR OBSERVACIONES (H08)
-// ==============================
+// CONSULTAR OBSERVACIONES 
 export const obtenerObservaciones = async (req, res) => {
   try {
     const {
@@ -64,7 +59,6 @@ export const obtenerObservaciones = async (req, res) => {
       fecha_fin
     } = req.query;
 
-    //  Simulación lista para JWT
     const id_instructor = req.user?.id || 1;
 
     const data = await service.obtenerObservaciones({
