@@ -1,7 +1,9 @@
 import db from "../config/db.js";
 
-// CREAR OBSERVACIÓN (H07)
-// ==============================
+
+
+// CREAR OBSERVACIÓN 
+
 export const crearObservacion = async (data) => {
 
   if (data.descripcion.trim().length < 10) {
@@ -37,8 +39,7 @@ export const crearObservacion = async (data) => {
 };
 
 
-// CONSULTAR OBSERVACIONES (H08)
-// ========================
+// CONSULTAR OBSERVACIONES 
 export const obtenerObservaciones = async (filtros) => {
 
   let query = `
