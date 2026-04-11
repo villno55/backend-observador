@@ -1,7 +1,5 @@
 import db from "../config/db.js";
 
-
-// ==============================
 // CREAR OBSERVACIÓN (H07)
 // ==============================
 export const crearObservacion = async (data) => {
@@ -39,10 +37,8 @@ export const crearObservacion = async (data) => {
 };
 
 
-
-// ==============================
 // CONSULTAR OBSERVACIONES (H08)
-// ==============================
+// ========================
 export const obtenerObservaciones = async (filtros) => {
 
   let query = `
@@ -53,10 +49,10 @@ export const obtenerObservaciones = async (filtros) => {
       o.descripcion,
       o.fecha_observacion,
 
-      -- 👇 nombre completo aprendiz
+      --  nombre completo aprendiz
       CONCAT(pa.nombres, ' ', pa.apellidos) AS aprendiz,
 
-      -- 👇 nombre completo instructor (autor)
+      --  nombre completo instructor (autor)
       CONCAT(pi.nombres, ' ', pi.apellidos) AS instructor
 
     FROM observaciones o
@@ -71,7 +67,7 @@ export const obtenerObservaciones = async (filtros) => {
     JOIN usuarios ui ON i.id_usuario = ui.id_usuario
     JOIN personas pi ON ui.id_usuario = pi.id_usuario
 
-    -- 🔥 seguridad por grupo
+    -- s seguridad por grupo
     JOIN instructor_grupo ig ON ig.id_instructor = i.id_instructor
     JOIN aprendiz_grupo ag 
       ON ag.id_grupo = ig.id_grupo 
