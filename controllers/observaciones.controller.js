@@ -13,7 +13,7 @@ export const crearObservacion = async (req, res) => {
       descripcion
     } = req.body;
 
-    // 🔥 Simulación lista para JWT
+    //  Simulación lista para JWT
     const id_instructor = req.user?.id || 1;
 
     // Validar campos obligatorios
@@ -64,7 +64,7 @@ export const obtenerObservaciones = async (req, res) => {
       fecha_fin
     } = req.query;
 
-    // 🔥 Simulación lista para JWT
+    //  Simulación lista para JWT
     const id_instructor = req.user?.id || 1;
 
     const data = await service.obtenerObservaciones({
